@@ -5,7 +5,7 @@ const morgan = require('morgan')
 
 // const routes = require('../routes')
 const app = express()
-const port = 3000
+const port = 3000 || 4000
 
 //Middlewares
 app.use(cors())
