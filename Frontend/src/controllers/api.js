@@ -28,12 +28,55 @@ export const loginUser = async (data) => {
   const { username, password } = data;
   let response;
   await axios
-    .post(url, {
+    .post(`${url}login`, {
       username,
       password,
     })
-    .then((res) => (response = res))
+    .then((res) => {
+      response = res;
+    })
     .catch((err) => catchError(err));
 
   return response;
+};
+
+export const registerUser = async (data) => {
+  const { username, password, email } = data;
+
+  let response;
+  await axios
+    .post(`${url}register`, { username, email, password })
+    .then((res) => (response = res))
+    .catch((err) => catchError(err));
+};
+
+export const addNewTweet = async (data) => {
+  let response;
+  const { userId, content } = data;
+  axios
+    .post(`${url}newTweet`, {
+      userId,
+      content,
+    })
+    .then((res) => (response = res))
+    .catch((err) => catchError(err));
+  return response;
+};
+
+export const retrieveTweetsByUser = async (userId) => {
+  try {
+    const response = await axios.get(`${url}getTweetsByUserId/${userId}`);
+    return response;
+  } catch (error) {
+    catchError(error);
+  }
+};
+
+export const retrieveSearch = async (text) => {
+  try {
+    const response = await axios.get(`${url}getSearchResults/${text}`);
+    return response.data;
+  } catch (error) {
+    catchError(error);
+  }
 };

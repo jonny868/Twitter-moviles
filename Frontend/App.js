@@ -5,50 +5,55 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
-import NewTweet from "./src/components/NewTweet";
+import NewTweet from "./src/screens/NewTweet";
+import { Context } from "./src/controllers/context";
+import { useState } from "react";
+import SeachScreen from "./src/screens/SeachScreen";
 
 export default function App({ navigation }) {
   const Stack = createNativeStackNavigator();
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="LoginScreen"
-        screenOptions={{
-          animation: "flip",
-        }}
-      >
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={({navigation})=>({
-            headerStyle: {
-              backgroundColor: "#f4511e",
-            },
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            headerRight: ()=>(
-              <Text onPress={()=> navigation.navigate('Login')}>Login</Text>
-            )
-          })}
-        />
 
-        <Stack.Screen
-          name="NewTweet"
-          component={NewTweet}
-          options={{
-            presentation: "modal",
-            headerStyle: {
-              backgroundColor: "#f4511e",
-            },
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            animation: "slide_from_bottom"
+
+  const [user, setUser] = useState({
+    username:'',
+    email:'',
+    id:'',
+    date:'',
+    profilePicture: ''
+  })
+  return (
+    <Context.Provider value={{
+      user, setUser
+    }}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Search"
+          screenOptions={{
+            animation: "flip",
+            headerShown: false
           }}
-        />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+        >
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+          />
+
+          <Stack.Screen
+            name="NewTweet"
+            component={NewTweet}
+            options={{
+              presentation: "modal",
+              animation: "slide_from_bottom",
+            }}
+          />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Search" component={SeachScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{
+          animation: "slide_from_right",
+          }}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Context.Provider>
   );
 }
 

@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const login = require('./controllers/login');
-const register = require('./controllers/register');
+const {login, find, register} = require('./controllers/userCtrl');
+const  {addNewTweet, findTweetsByUserId}  = require("./controllers/tweet");
 
 const router = Router();
 
@@ -12,5 +12,8 @@ router.get("/", (req, res) => {
 
 router.post("/login", login);
 router.post("/register", register);
+router.post("/newTweet", addNewTweet)
+router.get("/getTweetsByUserId/:userId", findTweetsByUserId)
+router.get("/getSearchResults/:text", find)
 
 module.exports = router;
