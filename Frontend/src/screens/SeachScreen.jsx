@@ -8,30 +8,30 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
+import Swiper from "react-native-swiper";
 
 import GlobalHeader from "../components/GlobalHeader";
 import { retrieveSearch } from "../controllers/api";
+import ProfileCard from "../components/ProfileCard";
+import TweetCard from "../components/TweetCard";
 
 const SeachScreen = () => {
   const [input, setInput] = useState();
-  
-  const [tweets, setTweets] = useState({});
-  const [profiles, setProfiles] = useState({});
+
+  const [tweets, setTweets] = useState([]);
+  const [profiles, setProfiles] = useState([]);
   //Change input value
   const inputChange = (text) => {
     setInput(text);
   };
 
-  const searchBtn = async  () => {
-    await retrieveSearch(input).then(
-        res => {
-            setProfiles(res.profiles)
-            setTweets(res.tweets)
-            console.log(profiles)
-            console.log(tweets)
-        }
-
-    )
+  const searchBtn = async () => {
+    await retrieveSearch(input).then((res) => {
+      setProfiles(res.profiles);
+      setTweets(res.tweets);
+      console.log(profiles);
+      console.log(tweets);
+    });
   };
   return (
     <View style={styles.container}>
@@ -52,17 +52,36 @@ const SeachScreen = () => {
         >
           <Entypo name="magnifying-glass" size={24} color="#f4511e" />
         </TouchableWithoutFeedback>
-
+      </View>
+      <View style={{ height: 200, backgroundColor: "#ccc", width: 380, alignSelf: "center" }}>
+        <Swiper showsPagination>
+          {profiles !== null ? (
+            profiles.map((profile) => {
+              return (
+                <View key={profile.id}>
+                  <ProfileCard username={profile.username} bio={'Soy un cacahuate'}/>
+                </View>
+              );
+            })
+          ) : (
+            <Text>Nothing to see here</Text>
+          )}
+        </Swiper>
       </View>
       <View>
-        {profiles !== null ? profiles.map((profile) => {
-          return <Text key={profiles.id}>{profile.username}</Text>
-        }): <Text>Nothing to see here</Text>}
+        <TweetCard content='Helllo'/>
+        <Swiper>
 
-
-        {tweets !== null ? tweets.map(tweet => {
-          return <Text key={tweet.id}>{tweet.content}</Text>
-        }): null}
+        {tweets !== null
+          ? tweets.map((tweet) => {
+              return (
+                <View key={tweet.id}>
+                  <TweetCard content={tweet.content } />
+                </View>
+                  );
+            })
+          :<Text>No tweetws were found</Text>}
+        </Swiper>
       </View>
     </View>
   );
