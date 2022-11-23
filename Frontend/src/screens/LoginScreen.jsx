@@ -38,7 +38,10 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <GlobalHeader name='Login'/>
+      <View style={styles.cardContainer}>
+
       <TextInput
+        style={styles.input}
         value={inputs.username}
         onChangeText={(text) => {
           inputChange("username", text);
@@ -46,6 +49,7 @@ export default function LoginScreen({ navigation }) {
         placeholder="username"
       />
       <TextInput
+      style={styles.input}
         value={inputs.password}
         onChangeText={(text) => {
           inputChange("password", text);
@@ -53,22 +57,55 @@ export default function LoginScreen({ navigation }) {
         placeholder="password"
         secureTextEntry
       />
-      <TouchableOpacity onPress={() => loginBtn()}>
+      <TouchableOpacity style={styles.loginBtn} onPress={() => loginBtn()}>
         <View>
-          <Text>Login</Text>
+          <Text style={{fontSize: 15, color: '#eee', fontWeight: 'bold'}}>Login</Text>
         </View>
       </TouchableOpacity>
+        <View style={{flexDirection: 'row', alignSelf: "center", marginVertical: 20}}>
+        <Text>Don't have an account? </Text>
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Register')}>
-        <View>
-          <Text>Register</Text>
-        </View>
+        <Text style={{color: "#fff"}}>Register</Text>
       </TouchableWithoutFeedback>
+        </View>
     </View>
+      </View>
   );
 }
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    marginTop: StatusBar.currentHeight
+    marginTop: StatusBar.currentHeight,
+
+  },
+  cardContainer:{
+    backgroundColor: '#f4511e',
+    position: "absolute",
+    top: 300,
+    width: 380,
+    alignSelf: 'center',
+    borderRadius: 5,
+    height: 340,
+    paddingTop: 10
+  },
+  input:{
+    backgroundColor: '#eee',
+    borderRadius: 10,
+    height: 40,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
+    fontSize: 15
+  },
+  loginBtn:{
+    borderRadius: 5,
+    borderWidth: 3,
+    height:40,
+    width: 100,
+    marginVertical: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#eee',
   }
 });

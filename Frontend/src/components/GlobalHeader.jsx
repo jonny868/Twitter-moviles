@@ -1,4 +1,4 @@
-import { StyleSheet, Text, SafeAreaView, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, SafeAreaView, TouchableOpacity, Image, View } from "react-native";
 import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,7 +15,7 @@ const GlobalHeader = (props) => {
       {props.hasBack === true ?
       
       <TouchableOpacity onPress={()=>{
-        navigation.navigate('Home');
+        navigation.goBack();
       }}>
         <Ionicons
           style={styles.backBtn}
@@ -24,9 +24,10 @@ const GlobalHeader = (props) => {
           color="black"
         />
       </TouchableOpacity>
-      :<Text>HEHE</Text>}
+      :<View></View>}
       <Text style={styles.headerText}>{props.name}</Text>
-      <Image source={{ uri: imgUri || 'https://res.cloudinary.com/dqwbl8iq2/image/upload/v1668872408/default-profile-pic-e1513291410505_svzzt5.jpg'}} style={styles.profilePic} />
+      {props.hasProfilePic === true? <Image source={{ uri: imgUri || 'https://res.cloudinary.com/dqwbl8iq2/image/upload/v1668872408/default-profile-pic-e1513291410505_svzzt5.jpg'}} style={styles.profilePic} />: <View></View>}
+      
     </SafeAreaView>
   );
 };

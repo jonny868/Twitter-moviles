@@ -10,14 +10,14 @@ const login = async (req, res) => {
   if (findUsername) {
     const verifyPassword = bcrypt.compareSync(password, findUsername.password);
     if (verifyPassword) {
-      const { username, password, id, date, email, profilePicture } = findUsername;
+      const { username, id, date, email, profilePicture, bio } = findUsername;
       console.log('test')
       return res.status(200).json({
         username,
         id,
         date,
         email,
-        profilePicture
+        profilePicture, bio
       });
     } else {
       return res.status(404).json({
@@ -36,7 +36,7 @@ const login = async (req, res) => {
 //REGISTER CONTROLLER
 
 const register = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, bio } = req.body;
   const id = uuidv4();
 
   //verificar si el nombre de usuario esta en uso
@@ -63,7 +63,7 @@ const register = async (req, res) => {
   const cryptPass = bcrypt.hashSync(password, salt);
   //formatear fecha de creacion
   const formatedDate = moment().format('LLL')
-  const newUser = new User({ username, password: cryptPass, email, id, date:formatedDate });
+  const newUser = new User({ username, password: cryptPass, email,bio, id, date:formatedDate });
   await newUser.save();
   console.log(newUser)
   res.status(200).json({

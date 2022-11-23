@@ -15,7 +15,7 @@ const NewTweet = () => {
   const { user } = useContext(Context);
   const navigation = useNavigation();
   const submitBtn = async () => {
-    const res = await addNewTweet({ userId: user.id, content: content });
+    const res = await addNewTweet({ userId: user.id, content: content, owner:user.username });
     console.log(content, user.id);
 
     setContent("");

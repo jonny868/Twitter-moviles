@@ -52,11 +52,12 @@ export const registerUser = async (data) => {
 
 export const addNewTweet = async (data) => {
   let response;
-  const { userId, content } = data;
+  const { userId, content, owner } = data;
   axios
     .post(`${url}newTweet`, {
       userId,
       content,
+      owner
     })
     .then((res) => (response = res))
     .catch((err) => catchError(err));

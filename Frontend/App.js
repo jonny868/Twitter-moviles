@@ -19,6 +19,7 @@ export default function App({ navigation }) {
     email:'',
     id:'',
     date:'',
+    bio:'',
     profilePicture: ''
   })
   return (
@@ -27,7 +28,7 @@ export default function App({ navigation }) {
     }}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Search"
+          initialRouteName="Login"
           screenOptions={{
             animation: "flip",
             headerShown: false

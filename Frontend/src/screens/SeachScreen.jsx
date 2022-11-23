@@ -53,8 +53,8 @@ const SeachScreen = () => {
           <Entypo name="magnifying-glass" size={24} color="#f4511e" />
         </TouchableWithoutFeedback>
       </View>
-      <View style={{ height: 200, backgroundColor: "#ccc", width: 380, alignSelf: "center" }}>
-        <Swiper showsPagination>
+      <View style={{height: 180}}>
+        <Swiper>
           {profiles !== null ? (
             profiles.map((profile) => {
               return (
@@ -68,19 +68,19 @@ const SeachScreen = () => {
           )}
         </Swiper>
       </View>
-      <View>
-        <TweetCard content='Helllo'/>
+      <View style={{height: 180}}>
         <Swiper>
-
-        {tweets !== null
-          ? tweets.map((tweet) => {
+          {profiles !== null ? (
+            profiles.map((tweet) => {
               return (
                 <View key={tweet.id}>
-                  <TweetCard content={tweet.content } />
+                  <TweetCard content={tweet.content}/>
                 </View>
-                  );
+              );
             })
-          :<Text>No tweetws were found</Text>}
+          ) : (
+            <Text>Nothing to see here</Text>
+          )}
         </Swiper>
       </View>
     </View>

@@ -3,11 +3,11 @@ const moment = require("moment");
 const { v4: uuidv4 } = require("uuid");
 
 const addNewTweet = async (req, res) => {
-  const { content, userId } = req.body;
+  const { content, userId, owner } = req.body;
   const id = uuidv4();
-  const date = moment().format("LLL");
+  const date = moment([]).format("LLL");
 
-  const newTweet = new Tweet({ userId, content, id, date });
+  const newTweet = new Tweet({ userId, content, id, date, owner });
   await newTweet.save();
   res.status(200).json({
     ok: true,
