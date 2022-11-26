@@ -9,35 +9,45 @@ import NewTweet from "./src/screens/NewTweet";
 import { Context } from "./src/controllers/context";
 import { useState } from "react";
 import SeachScreen from "./src/screens/SeachScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+import TweetScreen from "./src/screens/TweetScreen";
 
 export default function App({ navigation }) {
   const Stack = createNativeStackNavigator();
 
-
+  const [tweetData, setTweetData] = useState(null);
+  const [reload, setReload] = useState(true);
   const [user, setUser] = useState({
-    username:'',
-    email:'',
-    id:'',
-    date:'',
-    bio:'',
-    profilePicture: ''
-  })
+    username: "",
+    email: "",
+    id: "",
+    date: "",
+    bio: "",
+    profilePicture: "",
+    location: "",
+    dob:'',
+    name: "",
+  });
   return (
-    <Context.Provider value={{
-      user, setUser
-    }}>
+    <Context.Provider
+      value={{
+        user,
+        setUser,
+        reload,
+        setReload,
+        tweetData,
+        setTweetData
+      }}
+    >
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
             animation: "flip",
-            headerShown: false
+            headerShown: false,
           }}
         >
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-          />
+          <Stack.Screen name="Home" component={HomeScreen} />
 
           <Stack.Screen
             name="NewTweet"
@@ -48,10 +58,16 @@ export default function App({ navigation }) {
             }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Tweet" component={TweetScreen} />
           <Stack.Screen name="Search" component={SeachScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} options={{
-          animation: "slide_from_right",
-          }}/>
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              animation: "slide_from_right",
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Context.Provider>

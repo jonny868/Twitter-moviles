@@ -30,7 +30,7 @@ const NewTweet = () => {
   };
   return (
     <View style={styles.container}>
-      <GlobalHeader name="New Tweet" />
+      <GlobalHeader name="New Tweet" hasBack />
       <TextInput
         onChangeText={(text) => inputChange(text)}
         value={content}

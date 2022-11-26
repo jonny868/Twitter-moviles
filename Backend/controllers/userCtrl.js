@@ -10,14 +10,28 @@ const login = async (req, res) => {
   if (findUsername) {
     const verifyPassword = bcrypt.compareSync(password, findUsername.password);
     if (verifyPassword) {
-      const { username, id, date, email, profilePicture, bio } = findUsername;
-      console.log('test')
+      const {
+        username,
+        id,
+        date,
+        email,
+        profilePicture,
+        bio,
+        dob,
+        name,
+        location,
+      } = findUsername;
+      console.log(findUsername);
       return res.status(200).json({
         username,
         id,
         date,
         email,
-        profilePicture, bio
+        profilePicture,
+        bio,
+        name,
+        location,
+        dob,
       });
     } else {
       return res.status(404).json({
@@ -27,8 +41,8 @@ const login = async (req, res) => {
     }
   } else {
     return res.status(404).json({
-        ok: false,
-        message: "username incorrect"
+      ok: false,
+      message: "username incorrect",
     });
   }
 };
@@ -36,21 +50,21 @@ const login = async (req, res) => {
 //REGISTER CONTROLLER
 
 const register = async (req, res) => {
-  const { username, password, email, bio } = req.body;
+  const { username, name, password, email, bio, dob, location } = req.body;
   const id = uuidv4();
 
   //verificar si el nombre de usuario esta en uso
   const checkUsername = await User.findOne({ username });
   //verificar si el correo esta en uso
   const checkEmail = await User.findOne({ email });
-//si el usuario esta en uso
+  //si el usuario esta en uso
   if (checkUsername) {
     return res.status(400).json({
       ok: false,
       message: "Username already taken",
     });
   }
-//si el email esta en uso
+  //si el email esta en uso
   if (checkEmail) {
     return res.status(400).json({
       ok: false,
@@ -62,10 +76,21 @@ const register = async (req, res) => {
   const salt = bcrypt.genSaltSync();
   const cryptPass = bcrypt.hashSync(password, salt);
   //formatear fecha de creacion
-  const formatedDate = moment().format('LLL')
-  const newUser = new User({ username, password: cryptPass, email,bio, id, date:formatedDate });
+  const formatedDate = moment().format("LLL");
+  const newUser = new User({
+    username,
+    password: cryptPass,
+    email,
+    bio,
+    id,
+    profilePicture,
+    name,
+    location,
+    dob,
+    date: formatedDate,
+  });
   await newUser.save();
-  console.log(newUser)
+  console.log(newUser);
   res.status(200).json({
     ok: true,
     message: "User registered successfully",
@@ -73,16 +98,18 @@ const register = async (req, res) => {
 };
 
 const find = async (req, res) => {
-  const {text} = req.params
-  const findUser = await User.find({username:{ $regex: text }})
-  const findTweets = await Tweet.find({content: {$regex: text}})
-  if(findUser || findTweets){
-    return res.status(200).json({profiles:findUser,tweets:findTweets})
-  }else{
+  const { text } = req.params;
+  const findUser = await User.find({ username: { $regex: text } });
+  const findTweets = await Tweet.find({ content: { $regex: text } });
+  if (findUser || findTweets) {
+    return res.status(200).json({ profiles: findUser, tweets: findTweets });
+  } else {
     return res.status(404).json({
-      message: 'No results found',
-    })
+      message: "No results found",
+    });
   }
-}
+};
 
-module.exports = {login, find, register};
+
+
+module.exports = { login, find, register };

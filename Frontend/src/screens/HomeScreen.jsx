@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   FlatList,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useContext, useEffect, useState } from "react";
@@ -14,33 +15,36 @@ import GlobalHeader from "../components/GlobalHeader";
 import { retrieveTweetsByUser } from "../controllers/api";
 import { useIsFocused } from "@react-navigation/native";
 import TweetCard from "../components/TweetCard";
+
 const moment = require("moment");
 const HomeScreen = ({ navigation }) => {
   const [tweets, setTweets] = useState(null);
-  const { user } = useContext(Context);
+  const { user, reload, tweetData, setTweetData } = useContext(Context);
   const isFocused = useIsFocused();
+  // const [tweetData, setTweetData] = useState(null);
 
   useEffect(() => {
     retrieveTweetsByUser(user.id).then((res) => {
       setTweets(res.data);
     });
-  }, [isFocused]);
+  }, [isFocused, reload]);
+  //ELIMINAR TWEET
 
+  //VALIDANDO SI EL TWEET ES DEL USUARIO LOGEADO PARA MOSTRAR EL BOTON DE DELETE
   const checkAuthority = (tweet, userId) => {
     if (tweet.userId === userId) {
       return (
         <TweetCard
           isAuthor
-          key={tweet.id}
           username={tweet.owner}
           date={`${moment(tweet.date).fromNow()} ago`}
           content={tweet.content}
+          tweetId={tweet.id}
         />
       );
     } else {
       return (
         <TweetCard
-          key={tweet.id}
           username={tweet.owner}
           date={`${moment(tweet.date).fromNow()} ago`}
           content={tweet.content}
@@ -48,9 +52,10 @@ const HomeScreen = ({ navigation }) => {
       );
     }
   };
+
   return (
     <View style={styles.container}>
-      <GlobalHeader name="Home" hasProfilePic />
+      <GlobalHeader name="Home" hasProfilePic hasMenu />
 
       <TouchableOpacity
         style={styles.newTweetBtn}
@@ -65,7 +70,16 @@ const HomeScreen = ({ navigation }) => {
 
       <ScrollView>
         {tweets !== null
-          ? tweets.map((tweet) => checkAuthority(tweet, user.id))
+          ? tweets.map((tweet) =>(
+            <TouchableOpacity  key={tweet.id} onPress={() => {
+              setTweetData(tweet)
+              navigation.navigate('Tweet')
+              console.log(tweetData)
+            }} >
+
+              {checkAuthority(tweet, user.id)}
+            </TouchableOpacity>
+             ))
           : null}
       </ScrollView>
     </View>

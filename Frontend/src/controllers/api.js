@@ -41,13 +41,14 @@ export const loginUser = async (data) => {
 };
 
 export const registerUser = async (data) => {
-  const { username, password, email } = data;
+  const { username, password, email, location, bio, name, dob } = data;
 
   let response;
   await axios
-    .post(`${url}register`, { username, email, password })
+    .post(`${url}register`, { username, password, email, location, bio, name, dob })
     .then((res) => (response = res))
     .catch((err) => catchError(err));
+    return response;
 };
 
 export const addNewTweet = async (data) => {
@@ -81,3 +82,16 @@ export const retrieveSearch = async (text) => {
     catchError(error);
   }
 };
+
+
+export const deleteTweetById = async (data) => {
+  try {
+    let response
+   await axios.post(`${url}deleteTweetById`,{data})
+   .then(res => response = res)
+    return response
+  } catch (error) {
+    catchError(error)
+    
+  }
+}

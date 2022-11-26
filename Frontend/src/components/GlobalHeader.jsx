@@ -1,33 +1,67 @@
-import { StyleSheet, Text, SafeAreaView, TouchableOpacity, Image, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  View,
+} from "react-native";
 import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Context } from "../controllers/context";
 
 const GlobalHeader = (props) => {
-    const navigation = useNavigation();
-    const {user} = useContext(Context)
-    const imgUri = user.profilePicture
+  const navigation = useNavigation();
+  const { user } = useContext(Context);
+  const imgUri = user.profilePicture;
 
-    
   return (
     <SafeAreaView style={styles.container}>
-      {props.hasBack === true ?
-      
-      <TouchableOpacity onPress={()=>{
-        navigation.goBack();
-      }}>
-        <Ionicons
-          style={styles.backBtn}
-          name="chevron-back-outline"
-          size={24}
-          color="black"
-        />
-      </TouchableOpacity>
-      :<View></View>}
+      {props.hasBack === true ? (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Ionicons
+            style={styles.backBtn}
+            name="chevron-back-outline"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      ) : (
+        null
+      )}
+
+      {props.hasMenu === true ?(
+      <TouchableOpacity onPress={()=>console.log('menu opened')}>
+        <View>
+        <Ionicons name="menu" size={28} color="#eee" />
+        </View>
+      </TouchableOpacity>)
+    :null
+    }
+
       <Text style={styles.headerText}>{props.name}</Text>
-      {props.hasProfilePic === true? <Image source={{ uri: imgUri || 'https://res.cloudinary.com/dqwbl8iq2/image/upload/v1668872408/default-profile-pic-e1513291410505_svzzt5.jpg'}} style={styles.profilePic} />: <View></View>}
-      
+      {props.hasProfilePic === true ? (
+        <TouchableOpacity onPress={() => {
+         navigation.navigate('Profile') 
+        }}>
+
+          <Image
+            source={{
+              uri:
+                imgUri ||
+                "https://res.cloudinary.com/dqwbl8iq2/image/upload/v1668872408/default-profile-pic-e1513291410505_svzzt5.jpg",
+            }}
+            style={styles.profilePic}
+          />
+        </TouchableOpacity>
+      ) : (
+        <View></View>
+      )}
     </SafeAreaView>
   );
 };
@@ -46,12 +80,11 @@ const styles = StyleSheet.create({
   },
   headerText: { color: "white", fontSize: 20 },
   backBtn: { color: "white" },
-  profilePic:{
+  profilePic: {
     width: 40,
     height: 40,
     borderRadius: 40,
     borderWidth: 1,
     borderColor: "white",
-
-  }
+  },
 });
