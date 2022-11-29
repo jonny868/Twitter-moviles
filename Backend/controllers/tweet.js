@@ -42,16 +42,36 @@ const deleteTweetById = async (req, res) => {
 const postNewComment = async (req, res) => {
   const id = uuidv4();
   const date = moment().format('YYYY-MM-DD')
-  const { tweetId, username, userId, comment } = req.body;
+  const { tweetId, username, userId, content } = req.body;
+  console.log(req.body)
 
-  const findTweet = await Tweet.updateOne()
-  console.log(findTweet);
-  await findTweet.comments.push({ id,
-    username, userId, comment, date
-})
-// await findTweet.save()
+  const findTweet = await Tweet.findOneAndUpdate({tweetId: tweetId}, {$push:{comments:[{id: id, date: date,owner:username,userId, comment:content}]}})
+  await findTweet.save()
+  
 
   res.json({ data: findTweet })
 };
 
-module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment }
+const setLike = async (req, res) => {
+  const {userId, tweetId, tweeIsLiked} = req.body
+  const tweet = await Tweet.find({'id':tweetId})
+  console.log(tweet[0].likes)
+  await Tweet.updateOne({'id':tweetId}, {'tweet[0].likes': tweet[0].likes +1})
+  console.log(tweet[0].likes)
+  
+
+}
+
+
+
+const findCommentsByTweetId = async (req, res) => {
+ const {tweetId} = req.params
+ console.log(tweetId)
+ const findComments = await Tweet.find({id:tweetId})
+ console.log(findComments[0].comments)
+ res.status(200).json(findComments[0].comments)
+ 
+}
+
+
+module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment,setLike, findCommentsByTweetId }

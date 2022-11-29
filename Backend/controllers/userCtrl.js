@@ -5,6 +5,7 @@ const moment = require("moment");
 const Tweet = require("../models/Tweet");
 
 const login = async (req, res) => {
+  console.log('Hello?')
   const { username, password } = req.body;
   const findUsername = await User.findOne({ username });
   if (findUsername) {

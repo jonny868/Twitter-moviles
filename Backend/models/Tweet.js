@@ -10,8 +10,11 @@ const TweetSchema = new Schema({
     date: {
         type: String
     },
-    likes: [{}],
-    comments:[{}]
+    likes:{
+        type: Number,
+        default: 0
+    },
+    comments:[]
 })
 
 module.exports = model('Tweet', TweetSchema)

@@ -1,6 +1,7 @@
 const axios = require("axios").default;
 
 const url = "http://10.0.0.115:3000/";
+const urlOffice = "http://10.1.10.115:3000/"
 
 const catchError = async (err) => {
   /// Error
@@ -67,16 +68,26 @@ export const addNewTweet = async (data) => {
 
 export const retrieveTweetsByUser = async (userId) => {
   try {
-    const response = await axios.get(`${url}getTweetsByUserId/${userId}`);
+    let response = await axios.get(`${url}getTweetsByUserId/${userId}`);
     return response;
   } catch (error) {
     catchError(error);
   }
 };
 
+export const addNewComment = async (data) => {
+  try {
+    console.log(data)
+    let response = await axios.post(`${url}postNewComment`, data)
+    return response
+  } catch (error) {
+    catchError(error)
+  }
+}
+
 export const retrieveSearch = async (text) => {
   try {
-    const response = await axios.get(`${url}getSearchResults/${text}`);
+    let response = await axios.get(`${url}getSearchResults/${text}`);
     return response.data;
   } catch (error) {
     catchError(error);
@@ -93,5 +104,25 @@ export const deleteTweetById = async (data) => {
   } catch (error) {
     catchError(error)
     
+  }
+}
+
+export const retrieveComments = async (tweetId)=>{
+  try {
+    let response = await axios.get(`${url}getCommentsByTweet/${tweetId}`)
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    catchError(error)
+  }
+}
+
+export const likeATweet = async (data) => {
+  try {
+    // console.log(data)
+    let response = await axios.post(`${url}setLike`, data)
+    console.log(response.data)
+  } catch (error) {
+    catchError(error)
   }
 }

@@ -7,12 +7,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import React, { useContext } from "react";
-import { deleteTweetById } from "../controllers/api";
+import React, { useContext, useState } from "react";
+import { deleteTweetById, likeATweet } from "../controllers/api";
 import { Context } from "../controllers/context";
+import { useNavigation } from "@react-navigation/native";
 
 const TweetCard = (props) => {
+  const navigation = useNavigation();
   const { setReload, reload, setTweetData, tweetData } = useContext(Context);
+  const [likeData, setLikeData] = useState({
+    tweetIsLiked: false,
+    tweetId: '',
+    userId: ''
+    
+  })
+
   const deleteTweet = async (id) => {
     const res = await deleteTweetById(id);
     console.log(reload);
@@ -25,10 +34,26 @@ const TweetCard = (props) => {
       }
     }
   };
+  const likeBtn = ()=>{
+    likeATweet(likeData)
+    setLikeData({
+      userId:tweetData.userId,
+      tweetId:tweetData.id,
+      tweetIsLiked: !likeData.tweetIsLiked
+    })
+    console.log(likeData)
+  }
+
+  
   return (
-      <View style={styles.container}>
-        {/* PROFILE PIC */}
-        <View style={{ flex: 1 }}>
+    <View style={styles.container}>
+      {/* PROFILE PIC */}
+      <View style={{ flex: 1 }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Profile");
+          }}
+        >
           <Image
             style={{
               width: 50,
@@ -43,66 +68,71 @@ const TweetCard = (props) => {
                 "https://res.cloudinary.com/dqwbl8iq2/image/upload/v1668872408/default-profile-pic-e1513291410505_svzzt5.jpg",
             }}
           />
-        </View>
-        {/* TWEET */}
+        </TouchableOpacity>
+      </View>
+      {/* TWEET */}
+      <View
+        style={{
+          flex: 3,
+          backgroundColor: "#333",
+          justifyContent: "center",
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+        }}
+      >
+        {/* USERNAME AND TIME AGO */}
         <View
           style={{
-            flex: 3,
-            backgroundColor: "#333",
-            justifyContent: "center",
-            borderTopRightRadius: 5,
-            borderBottomRightRadius: 5,
+            flex: 1,
+            flexDirection: "row",
+            height: 50,
+            justifyContent: "space-between",
+            backgroundColor: "#444",
+            alignContent: "center",
+            paddingHorizontal: 5,
           }}
         >
-          {/* USERNAME AND TIME AGO */}
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              height: 50,
-              justifyContent: "space-between",
-              backgroundColor: "#444",
-              alignContent: "center",
-              paddingHorizontal: 5,
-            }}
-          >
-            <Text style={{ color: "#eee", alignSelf: "center" }}>
-              @{props.username}
-            </Text>
-            <Text style={{ color: "#eee", alignSelf: "center" }}>
-              {props.date}
-            </Text>
-          </View>
-          {/* CONTENT */}
-          <View style={{ flex: 2 }}>
-            <Text style={{ color: "#eee" }}>{props.content}</Text>
-          </View>
-          {/* BUTTONS */}
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-around",
-              paddingBottom: -5,
-              backgroundColor: "black",
-              alignItems: "center",
-            }}
-          >
-            <AntDesign name="hearto" size={15} color="white" />
-            <AntDesign name="retweet" size={15} color="white" />
-            <AntDesign name="staro" size={15} color="white" />
-            {props.isAuthor === true ? (
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  deleteTweet(props.tweetId);
-                }}
-              >
-                <AntDesign name="delete" size={15} color="white" />
-              </TouchableWithoutFeedback>
-            ) : null}
-          </View>
+          <Text style={{ color: "#eee", alignSelf: "center" }}>
+            @{props.username}
+          </Text>
+          <Text style={{ color: "#eee", alignSelf: "center" }}>
+            {props.date}
+          </Text>
+        </View>
+        {/* CONTENT */}
+        <View style={{ flex: 2 }}>
+          <Text style={{ color: "#eee" }}>{props.content}</Text>
+        </View>
+        {/* BUTTONS */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around",
+            paddingBottom: -5,
+            backgroundColor: "black",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity onPress={likeBtn}>
+            {
+              likeData.tweetIsLiked ? <AntDesign name="hearto" color="white" size={15} />:  <AntDesign name="heart" color="white" size={15} />
+            }
+          </TouchableOpacity>
+          <AntDesign name="retweet" size={15} color="white" />
+          <AntDesign name="staro" size={15} color="white" />
+          {props.isAuthor === true ? (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                deleteTweet(props.tweetId);
+              }}
+            >
+              <AntDesign name="delete" size={15} color="white" />
+            </TouchableWithoutFeedback>
+          ) : null}
         </View>
       </View>
+    </View>
   );
 };
 
