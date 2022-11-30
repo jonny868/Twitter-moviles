@@ -6,7 +6,7 @@ const urlOffice = "http://10.1.10.115:3000/"
 const catchError = async (err) => {
   /// Error
   if (err.response) {
-    console.log(err.response.data.msg);
+    // console.log(err.response.data.msg);
     return err.response;
     /// Error de mala conexion
   } else if (err.request) {
@@ -18,7 +18,7 @@ const catchError = async (err) => {
     };
     /// Error inesperado
   } else {
-    console.log("Error", err.message);
+    // console.log("Error", err.message);
     return {
       data: { msg: "Ha ocurrido un error inesperado, intente nuevamente" },
     };
@@ -77,7 +77,7 @@ export const retrieveTweetsByUser = async (userId) => {
 
 export const addNewComment = async (data) => {
   try {
-    console.log(data)
+    // console.log(data)
     let response = await axios.post(`${url}postNewComment`, data)
     return response
   } catch (error) {
@@ -110,18 +110,18 @@ export const deleteTweetById = async (data) => {
 export const retrieveComments = async (tweetId)=>{
   try {
     let response = await axios.get(`${url}getCommentsByTweet/${tweetId}`)
-    console.log(response.data)
+    // console.log(response.data)
     return response.data
   } catch (error) {
     catchError(error)
   }
 }
 
-export const likeATweet = async (data) => {
+export const likeATweet = async (liked, id, user) => {
   try {
     // console.log(data)
-    let response = await axios.post(`${url}setLike`, data)
-    console.log(response.data)
+    let response = await axios.post(`${url}setLike`, {liked, id, user})
+    // console.log(response.data)
   } catch (error) {
     catchError(error)
   }

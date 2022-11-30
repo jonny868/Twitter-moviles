@@ -73,7 +73,6 @@ const HomeScreen = ({ navigation }) => {
           ? tweets.map((tweet) =>(
             <TouchableOpacity  key={tweet.id} onPress={() => {
               setTweetData(tweet)
-              console.log(tweet)
               navigation.navigate('Tweet')
             }} >
 

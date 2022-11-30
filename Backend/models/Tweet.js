@@ -10,10 +10,8 @@ const TweetSchema = new Schema({
     date: {
         type: String
     },
-    likes:{
-        type: Number,
-        default: 0
-    },
+    likesCount: {Number, default:0},
+    Likes:[],
     comments:[]
 })
 

@@ -44,20 +44,33 @@ const postNewComment = async (req, res) => {
   const date = moment().format('YYYY-MM-DD')
   const { tweetId, username, userId, content } = req.body;
   console.log(req.body)
+  if(content!=='' || null){
+    await Tweet.updateOne({tweetId}, {'$push':{'comments':{ id, date, content, userId, username }}})
+  }
 
-  const findTweet = await Tweet.findOneAndUpdate({tweetId: tweetId}, {$push:{comments:[{id: id, date: date,owner:username,userId, comment:content}]}})
-  await findTweet.save()
+  
   
 
-  res.json({ data: findTweet })
 };
 
+//FIX, ITS BUGGED A S
 const setLike = async (req, res) => {
-  const {userId, tweetId, tweeIsLiked} = req.body
-  const tweet = await Tweet.find({'id':tweetId})
-  console.log(tweet[0].likes)
-  await Tweet.updateOne({'id':tweetId}, {'tweet[0].likes': tweet[0].likes +1})
-  console.log(tweet[0].likes)
+  const {tweetId, liked , user} = req.body
+  console.log(req.body)
+  if(liked){
+    await Tweet.updateOne({tweetId},{'$inc': { "likesCount": 1 },  "$push":{'Likes': user}})
+    return res.json({
+      message: 'Tweet liked'
+    })
+
+  }
+  else if(!liked) {
+    await Tweet.updateOne({tweetId},{'$inc': { "likesCount": -1 },  "$pull":{'Likes': user}})
+    return res.json({
+      message: 'Like removed'
+    })
+  }
+  
   
 
 }
@@ -66,7 +79,7 @@ const setLike = async (req, res) => {
 
 const findCommentsByTweetId = async (req, res) => {
  const {tweetId} = req.params
- console.log(tweetId)
+//  console.log(tweetId)
  const findComments = await Tweet.find({id:tweetId})
  console.log(findComments[0].comments)
  res.status(200).json(findComments[0].comments)

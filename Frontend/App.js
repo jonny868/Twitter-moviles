@@ -15,7 +15,9 @@ import TweetScreen from "./src/screens/TweetScreen";
 export default function App({ navigation }) {
   const Stack = createNativeStackNavigator();
 
-  const [tweetData, setTweetData] = useState(null);
+  const [tweetData, setTweetData] = useState({
+    id: '', owner:'',userId:'', like:"", content:"", comments:[], 
+  });
   const [reload, setReload] = useState(true);
   const [user, setUser] = useState({
     username: "",

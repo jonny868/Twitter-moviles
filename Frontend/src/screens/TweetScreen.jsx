@@ -22,14 +22,21 @@ const TweetScreen = () => {
     username: user.username,
     content: "",
   });
-  const [comments, setComments] = useState()
-let res
-  // useEffect(async () => {
-  //   res = await retrieveComments(tweetData.id)
-  //     setComments(res)
-  //     console.log('Comentarios:',comments)
-  //   }, [])
-  
+  const [comments, setComments] = useState([
+    {
+      content: "",
+      userId: "",
+      username: "",
+      date: "",
+      id: "",
+    },
+  ]);
+  useEffect(() => {
+    retrieveComments(tweetData.id).then((res) => {
+      setComments(res);
+      // console.log(comments)
+    });
+  }, []);
 
   const submitBtn = () => {
     const res = addNewComment(comment);
@@ -41,6 +48,9 @@ let res
       username: user.username,
       content: "",
     });
+  };
+  const test = () => {
+    const test2 = comments.map((comment) => console.log(comment));
   };
 
   const inputChange = (data) => setComment({ ...comment, content: data });
@@ -87,13 +97,12 @@ let res
               <Text>Submit</Text>
             </View>
           </TouchableOpacity>
-{/* 
-          {comments !== null ?
-            comments.map((com) => (
-              `${console.log(com)}`
-              )
-            )
-: null} */}
+          {comments !== null
+            ? comments.map((comment) => <Text>{comment.content}</Text>)
+            : null}
+          <TouchableOpacity onPress={test}>
+            <Text>Show Comments</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
