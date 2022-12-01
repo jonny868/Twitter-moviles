@@ -41,9 +41,9 @@ const deleteTweetById = async (req, res) => {
 
 const postNewComment = async (req, res) => {
   const id = uuidv4();
-  const date = moment().format('YYYY-MM-DD')
+  const date = moment().format('LLL')
   const { tweetId, username, userId, content } = req.body;
-  console.log(req.body)
+  // console.log(req.body)
   if(content!=='' || null){
     await Tweet.updateOne({tweetId}, {'$push':{'comments':{ id, date, content, userId, username }}})
   }
@@ -56,7 +56,7 @@ const postNewComment = async (req, res) => {
 //FIX, ITS BUGGED A S
 const setLike = async (req, res) => {
   const {tweetId, liked , user} = req.body
-  console.log(req.body)
+  // console.log(req.body)
   if(liked){
     await Tweet.updateOne({tweetId},{'$inc': { "likesCount": 1 },  "$push":{'Likes': user}})
     return res.json({
@@ -75,16 +75,30 @@ const setLike = async (req, res) => {
 
 }
 
+const setFavorite = async (req, res)=>{
+console.log('Favorite')
+
+}
+
 
 
 const findCommentsByTweetId = async (req, res) => {
  const {tweetId} = req.params
-//  console.log(tweetId)
- const findComments = await Tweet.find({id:tweetId})
+ console.log(tweetId)
+ const findComments = await Tweet.find({id:tweetId}).sort({date: -1})
  console.log(findComments[0].comments)
  res.status(200).json(findComments[0].comments)
  
 }
 
+const deleteComment = async (req, res)=>{
+  const {id, tweetId} = req.body
+  console.log(req.body)
+  await Tweet.findOneAndUpdate({tweetId},{"$pull":{'comments':{id:id}}} )
+  return res.json({
+    message:'Comment Deleted'
+  })
+}
 
-module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment,setLike, findCommentsByTweetId }
+
+module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment,setLike, findCommentsByTweetId, setFavorite, deleteComment }

@@ -33,7 +33,11 @@ const TweetCard = (props) => {
   const likeBtn = ()=>{
     setLikeTweet(!likeTweet)
     likeATweet(likeTweet, tweetData.id, tweetData.userId)
+    console.log(tweetData)
     
+  }
+  const favBtn = ()=>{
+    console.log(tweetData.id)
   }
 
   
@@ -57,7 +61,7 @@ const TweetCard = (props) => {
               marginTop: 25,
             }}
             source={{
-              uri:
+              uri: 
                 props.profilePic ||
                 "https://res.cloudinary.com/dqwbl8iq2/image/upload/v1668872408/default-profile-pic-e1513291410505_svzzt5.jpg",
             }}
@@ -113,11 +117,13 @@ const TweetCard = (props) => {
               likeTweet ?<View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{color:'white', paddingRight: 5, fontSize:15}}>2</Text>
                 <AntDesign name="hearto" color="white" size={15} /></View>:  <AntDesign name="heart" color="white" size={15} />
-              
             }
           </TouchableOpacity>
           <AntDesign name="retweet" size={15} color="white" />
+          <TouchableOpacity onPress={favBtn}>
+
           <AntDesign name="staro" size={15} color="white" />
+          </TouchableOpacity>
           {props.isAuthor === true ? (
             <TouchableWithoutFeedback
               onPress={() => {

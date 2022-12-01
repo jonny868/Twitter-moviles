@@ -5,6 +5,10 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import GlobalHeader from "../components/GlobalHeader";
@@ -12,9 +16,12 @@ import TweetCard from "../components/TweetCard";
 import moment from "moment/moment";
 import { Context } from "../controllers/context";
 import { addNewComment, retrieveComments } from "../controllers/api";
+import CommentCard from "../components/CommentCard";
 
 const TweetScreen = () => {
-  const { tweetData, user } = useContext(Context);
+  const { tweetData, user, reload, setReload } = useContext(Context);
+ 
+  const [loading,setLoading] = useState(false);
 
   const [comment, setComment] = useState({
     tweetId: tweetData.id,
@@ -32,11 +39,14 @@ const TweetScreen = () => {
     },
   ]);
   useEffect(() => {
+    setLoading(true)
     retrieveComments(tweetData.id).then((res) => {
       setComments(res);
-      // console.log(comments)
+      // setReload(false);
+      console.log(comments)
     });
-  }, []);
+    setLoading(false)
+  }, [reload]);
 
   const submitBtn = () => {
     const res = addNewComment(comment);
@@ -48,12 +58,17 @@ const TweetScreen = () => {
       username: user.username,
       content: "",
     });
+    setReload(!reload)
   };
   const test = () => {
-    const test2 = comments.map((comment) => console.log(comment));
+    return (
+      <Text>Hello</Text>
+    )
   };
 
   const inputChange = (data) => setComment({ ...comment, content: data });
+
+  const formatDate = (date) => moment(date).fromNow();
 
   const checkAuthority = (tweet, userId) => {
     if (tweetData.userId === userId) {
@@ -76,6 +91,25 @@ const TweetScreen = () => {
       );
     }
   };
+  const renderComent = ({item})=>{
+  
+  return(
+    <CommentCard
+    content={item.content}
+    date={formatDate(item.date)}
+    username={item.username}
+    userId={item.userId}
+    id={item.id}
+    tweetId={tweetData.id}
+    />
+  )
+}
+
+
+
+
+
+
   return (
     <View style={styles.container}>
       <GlobalHeader name={"Tweet"} hasBack />
@@ -97,12 +131,22 @@ const TweetScreen = () => {
               <Text>Submit</Text>
             </View>
           </TouchableOpacity>
-          {comments !== null
-            ? comments.map((comment) => <Text>{comment.content}</Text>)
-            : null}
-          <TouchableOpacity onPress={test}>
-            <Text>Show Comments</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={test}>
+            <Text>TEST</Text>
+          </TouchableOpacity> */}
+          <View>
+            {loading ? <ActivityIndicator/>:
+            <FlatList
+            data={comments}
+            keyExtractor={com =>com.id}
+            renderItem={renderComent}
+            ListFooterComponent={<View />}
+            ListFooterComponentStyle={{height:410}}
+            />
+            }
+          </View>
+            
+          
         </View>
       </View>
     </View>
@@ -115,6 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight,
+    // paddingBottom: 500
     // backgroundColor: 'red'
   },
 });

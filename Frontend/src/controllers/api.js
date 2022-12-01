@@ -126,3 +126,24 @@ export const likeATweet = async (liked, id, user) => {
     catchError(error)
   }
 }
+
+//not working yet 
+export const favATweet = async (data)=>{
+  try {
+    const response = await axios.post(`${url}setFavorite`, data )
+    return response
+  } catch (error) {
+    catchError(error)
+  }
+}
+
+
+export const deleteCommentById = async (id, tweetId)=>{
+try {
+  console.log(id, tweetId);
+  const response = await axios.post(`${url}deleteCommentById`,{id, tweetId})
+  return response
+} catch (error) {
+  catchError(error)
+}
+}
