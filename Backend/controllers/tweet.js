@@ -18,7 +18,7 @@ const addNewTweet = async (req, res) => {
 
 const findTweetsByUserId = async (req, res) => {
   const { userId } = req.params;
-  const findTweets = await Tweet.find({ userId });
+  const findTweets = await Tweet.find({ 'userId':userId });
   
   if (findTweets) {
     return res.json(findTweets);
@@ -32,7 +32,8 @@ const findTweetsByUserId = async (req, res) => {
 
 const deleteTweetById = async (req, res) => {
   const tweetId = req.body.data
-  await Tweet.deleteOne({tweetId})
+  console.log(tweetId)
+  await Tweet.findOneAndDelete({'id':tweetId})
   res.status(200).json({
     status: 200,
     message: "Tweet deleted successfully",
@@ -75,10 +76,6 @@ const setLike = async (req, res) => {
 
 }
 
-const setFavorite = async (req, res)=>{
-console.log('Favorite')
-
-}
 
 
 
@@ -94,11 +91,11 @@ const findCommentsByTweetId = async (req, res) => {
 const deleteComment = async (req, res)=>{
   const {id, tweetId} = req.body
   console.log(req.body)
-  await Tweet.findOneAndUpdate({tweetId},{"$pull":{'comments':{id:id}}} )
+  await Tweet.findOneAndUpdate({'id':tweetId},{"$pull":{'comments':{id:id}}} )
   return res.json({
     message:'Comment Deleted'
   })
 }
 
 
-module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment,setLike, findCommentsByTweetId, setFavorite, deleteComment }
+module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment,setLike, findCommentsByTweetId, deleteComment }

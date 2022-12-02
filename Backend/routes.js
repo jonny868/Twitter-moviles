@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const {login, find, register} = require('./controllers/userCtrl');
-const  {addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment, findCommentsByTweetId, setLike, setFavorite, deleteComment}  = require("./controllers/tweet");
+const {login, find, register, setFavorite} = require('./controllers/userCtrl');
+const  {addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment, findCommentsByTweetId, setLike, deleteComment}  = require("./controllers/tweet");
 
 const router = Router();
 

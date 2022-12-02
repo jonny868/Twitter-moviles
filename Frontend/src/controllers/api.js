@@ -69,6 +69,7 @@ export const addNewTweet = async (data) => {
 export const retrieveTweetsByUser = async (userId) => {
   try {
     let response = await axios.get(`${url}getTweetsByUserId/${userId}`);
+    // console.log(response.data)
     return response;
   } catch (error) {
     catchError(error);
@@ -98,6 +99,7 @@ export const retrieveSearch = async (text) => {
 export const deleteTweetById = async (data) => {
   try {
     let response
+    console.log(data)
    await axios.post(`${url}deleteTweetById`,{data})
    .then(res => response = res)
     return response
@@ -146,4 +148,18 @@ try {
 } catch (error) {
   catchError(error)
 }
+}
+
+
+export const addFavorite = async (data,user)=>{
+  try {
+    // console.log('FAVORITE:',data, 'USER:',user)
+    const response = await axios.post(`${url}setFavorite`, {data, user})
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    catchError(error)
+  }
+
+  
 }

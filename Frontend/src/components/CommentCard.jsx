@@ -5,11 +5,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { deleteCommentById } from "../controllers/api";
 
 const CommentCard = (props) => {
-  const { user, setReload } = useContext(Context);
+  const { user,reload, setReload } = useContext(Context);
 
   const deleteComment = async(id,tweetId)=>{
     const response = await deleteCommentById(id,tweetId)
-    setReload(true)
+    setReload(!reload)
     console.log(response.data)
     
     return response

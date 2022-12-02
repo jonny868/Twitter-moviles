@@ -111,6 +111,28 @@ const find = async (req, res) => {
   }
 };
 
+const setFavorite = async (req, res)=>{
+  const {user, data} = req.body
+  const findFavorite = await User.findOne({'id':user,'favorites':data})
+  console.log(findFavorite)
+  console.log(user,data)
+  // SI NO ESTA EL TWEET EN LOS FAVORITOS
+  if(findFavorite === null){
+    console.log('jejeps')
+    await User.updateOne({'id':user}, {'$push':{'favorites':data}})
+    return res.json({
+      message:'Tweet Added to favorites'
+    })
+  }else{
+    // SI ESTA EL TWEET LO SACA
+    await User.findOneAndUpdate({'id':user}, {'$pull':{'favorites':data}})
+    return res.json(
+      {
+        message:'Tweet Removed from favorites'
+      }
+    )
+  }
+}
 
 
-module.exports = { login, find, register };
+module.exports = { login, find, register, setFavorite };
