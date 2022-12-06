@@ -31,25 +31,32 @@ const GlobalHeader = (props) => {
             color="black"
           />
         </TouchableOpacity>
-      ) : (
-        null
-      )}
+      ) : null}
 
-      {props.hasMenu === true ?(
-      <TouchableOpacity onPress={()=>console.log('menu opened')}>
-        <View>
-        <Ionicons name="menu" size={28} color="#eee" />
-        </View>
-      </TouchableOpacity>)
-    :null
-    }
+      {props.hasSearch === true ? (
+        <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+          <View>
+            <Ionicons name="search-outline" size={24} color="#eee" />
+          </View>
+        </TouchableOpacity>
+      ) : null}
 
       <Text style={styles.headerText}>{props.name}</Text>
-      {props.hasProfilePic === true ? (
-        <TouchableOpacity onPress={() => {
-         navigation.navigate('Profile') 
-        }}>
 
+      {props.hasFavs === true ? (
+        <TouchableOpacity onPress={() => navigation.navigate("Favorites")}>
+          <View>
+            <Ionicons name="star" size={24} color="#eee" />
+          </View>
+        </TouchableOpacity>
+      ) : null}
+
+      {props.hasProfilePic === true ? (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Profile");
+          }}
+        >
           <Image
             source={{
               uri:

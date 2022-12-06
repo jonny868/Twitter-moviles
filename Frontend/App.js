@@ -8,9 +8,10 @@ import LoginScreen from "./src/screens/LoginScreen";
 import NewTweet from "./src/screens/NewTweet";
 import { Context } from "./src/controllers/context";
 import { useState } from "react";
-import SeachScreen from "./src/screens/SeachScreen";
+import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import TweetScreen from "./src/screens/TweetScreen";
+import FavoritesScreen from "./src/screens/FavoritesScreen";
 
 export default function App({ navigation }) {
   const Stack = createNativeStackNavigator();
@@ -62,13 +63,17 @@ export default function App({ navigation }) {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Tweet" component={TweetScreen} />
-          <Stack.Screen name="Search" component={SeachScreen} />
+          <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen
             name="Register"
             component={RegisterScreen}
             options={{
               animation: "slide_from_right",
             }}
+          />
+          <Stack.Screen
+          name="Favorites"
+          component={FavoritesScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

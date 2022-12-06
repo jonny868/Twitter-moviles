@@ -76,6 +76,7 @@ const TweetCard = (props) => {
             backgroundColor: "#444",
             alignContent: "center",
             paddingHorizontal: 5,
+            borderTopRightRadius: 5
           }}
         >
           <Text style={{ color: "#eee", alignSelf: "center" }}>
@@ -98,6 +99,7 @@ const TweetCard = (props) => {
             paddingBottom: -5,
             backgroundColor: "black",
             alignItems: "center",
+            borderBottomRightRadius: 5
           }}
         >
           <TouchableOpacity onPress={likeBtn}>

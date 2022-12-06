@@ -84,7 +84,6 @@ const register = async (req, res) => {
     email,
     bio,
     id,
-    profilePicture,
     name,
     location,
     dob,
@@ -134,5 +133,18 @@ const setFavorite = async (req, res)=>{
   }
 }
 
+const followUser = async (req, res) => {
+const {user, data} = req.body
+const findFollower = await User.findOne({'id': user, 'followers':data})
+if(findFollower === null){
+  await User.updateOne({'id': user},{'$inc': { "followCount": 1 },  "$push":{'followers': data}})
+  return res.json({
+    message:'You are now following this user'
+  })
+}else{
+  await User.findOneAndUpdate({'id': user},{'$inc': { "followCount": -1 },  "$pull":{'followers': data}})
+  return res.json({message:'No longer following this user'})
+}
+}
 
-module.exports = { login, find, register, setFavorite };
+module.exports = { login, find, register, setFavorite,followUser };

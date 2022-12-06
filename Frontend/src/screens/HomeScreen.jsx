@@ -22,6 +22,7 @@ const HomeScreen = ({ navigation }) => {
   const { user, reload, tweetData, setTweetData } = useContext(Context);
   const isFocused = useIsFocused();
   // const [tweetData, setTweetData] = useState(null);
+  const formatDate = (date) => moment(date, 'LLL').fromNow();
 
   useEffect(() => {
     retrieveTweetsByUser(user.id).then((res) => {
@@ -37,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
         <TweetCard
           isAuthor
           username={tweet.owner}
-          date={`${moment(tweet.date).fromNow()} ago`}
+          date={`${formatDate(tweet.date)} ago`}
           content={tweet.content}
           tweetId={tweet.id}
         />
@@ -55,7 +56,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <GlobalHeader name="Home" hasProfilePic hasMenu />
+      <GlobalHeader name="Home" hasProfilePic hasSearch hasFavs />
 
       <TouchableOpacity
         style={styles.newTweetBtn}

@@ -32,6 +32,8 @@ const UserSchema = new Schema({
     },
     location: { type: String},
     favorites:[],
+    followCount:{type: Number, default:0},
+    followers:[],
 
     bio:{
         type: String,

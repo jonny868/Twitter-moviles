@@ -6,7 +6,7 @@ const { findOneAndDelete } = require("../models/Tweet");
 const addNewTweet = async (req, res) => {
   const { content, userId, owner } = req.body;
   const id = uuidv4();
-  const date = moment([]).format("LLL");
+  const date = moment(new Date).format("LLL");
 
   const newTweet = new Tweet({ userId, content, id, date, owner });
   await newTweet.save();

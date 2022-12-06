@@ -68,7 +68,7 @@ const TweetScreen = () => {
 
   const inputChange = (data) => setComment({ ...comment, content: data });
 
-  const formatDate = (date) => moment(date).fromNow();
+  const formatDate = (date) => moment(date,'LLL').fromNow();
 
   const checkAuthority = (tweet, userId) => {
     if (tweetData.userId === userId) {

@@ -6,17 +6,20 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
+import moment from "moment";
 
 import GlobalHeader from "../components/GlobalHeader";
 import { retrieveSearch } from "../controllers/api";
 import ProfileCard from "../components/ProfileCard";
 import TweetCard from "../components/TweetCard";
+import { Context } from "../controllers/context";
 
-const SeachScreen = () => {
+const SearchScreen = () => {
   const [input, setInput] = useState();
+  const { user } = useContext(Context);
 
   const [tweets, setTweets] = useState([]);
   const [profiles, setProfiles] = useState([]);
@@ -25,8 +28,8 @@ const SeachScreen = () => {
     setInput(text);
   };
 
-  const searchBtn = async () => {
-    await retrieveSearch(input).then((res) => {
+  const searchBtn = () => {
+    retrieveSearch(input).then((res) => {
       setProfiles(res.profiles);
       setTweets(res.tweets);
       console.log(profiles);
@@ -53,13 +56,13 @@ const SeachScreen = () => {
           <Entypo name="magnifying-glass" size={24} color="#f4511e" />
         </TouchableWithoutFeedback>
       </View>
-      <View style={{height: 180}}>
+      <View style={{ height: 180 }}>
         <Swiper>
           {profiles !== null ? (
             profiles.map((profile) => {
               return (
                 <View key={profile.id}>
-                  <ProfileCard username={profile.username} bio={'Soy un cacahuate'}/>
+                  <ProfileCard username={profile.username} bio={profile.bio} user={profile.id} data={user.id} />
                 </View>
               );
             })
@@ -68,13 +71,17 @@ const SeachScreen = () => {
           )}
         </Swiper>
       </View>
-      <View style={{height: 180}}>
+      <View style={{ height: 200 }}>
         <Swiper>
-          {profiles !== null ? (
-            profiles.map((tweet) => {
+          {tweets !== null ? (
+            tweets.map((tweet) => {
               return (
                 <View key={tweet.id}>
-                  <TweetCard content={tweet.content}/>
+                  <TweetCard
+                    username={tweet.owner}
+                    date={`${moment(tweet.date, "LLL").fromNow()} ago`}
+                    content={tweet.content}
+                  />
                 </View>
               );
             })
@@ -87,7 +94,7 @@ const SeachScreen = () => {
   );
 };
 
-export default SeachScreen;
+export default SearchScreen;
 
 const styles = StyleSheet.create({
   container: {
