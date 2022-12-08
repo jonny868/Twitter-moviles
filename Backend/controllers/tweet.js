@@ -20,6 +20,7 @@ const addNewTweet = async (req, res) => {
 const findTweetsByUserId = async (req, res) => {
   const { userId } = req.params;
   const findTweets = await Tweet.find({ 'userId':userId });
+  console.log(findTweets)
   
   if (findTweets) {
     return res.json(findTweets);
@@ -62,7 +63,7 @@ const setLike = async (req, res) => {
   if(liked){
     await Tweet.updateOne({'id':id},{'$inc': { "likesCount": 1 },  "$push":{'Likes': user}})
     const findTweet = await Tweet.find({'id':id})
-    console.log(findTweet)
+    // console.log(findTweet)
     return res.json({
       findTweet,
       message: 'Tweet liked'

@@ -30,7 +30,7 @@ export default function LoginScreen({ navigation }) {
 
     setUser(res.data);
 
-    console.log(res.data);
+    // console.log(res.data);
 
     navigation.navigate("Home");
   };

@@ -24,8 +24,10 @@ const TweetCard = (props) => {
   };
   const likeBtn = () => {
     setLikeTweet(!likeTweet);
-    likeATweet(likeTweet, tweetData.id, tweetData.userId);
+    setTweetData({...tweetData, id:props.tweetId, userId:user.id})
     // console.log(tweetData);
+    likeATweet(likeTweet, tweetData.id, tweetData.userId);
+    
   };
   const favBtn = (id, user) => {
     addFavorite(id, user);

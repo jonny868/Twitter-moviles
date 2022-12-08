@@ -4,9 +4,8 @@ import {
   View,
   TouchableOpacity,
   StatusBar,
-  ScrollView,
   FlatList,
-  TouchableWithoutFeedback,
+  ActivityIndicator
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useContext, useEffect, useState } from "react";
@@ -19,50 +18,36 @@ import TweetCard from "../components/TweetCard";
 const moment = require("moment");
 const HomeScreen = ({ navigation }) => {
   const [tweets, setTweets] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { user, reload, tweetData, setTweetData } = useContext(Context);
   const isFocused = useIsFocused();
-  // const [tweetData, setTweetData] = useState(null);
-  const formatDate = (date) => moment(date, 'LLL').fromNow();
+
+  const formatDate = (date) => moment(date, "LLL").fromNow();
 
   useEffect(() => {
+    setLoading(true);
     retrieveTweetsByUser(user.id).then((res) => {
-      // console.log(res.data)
       setTweets(res.data.reverse());
+      console.log(tweets);
     });
+    setLoading(false);
   }, [isFocused, reload]);
-  //ELIMINAR TWEET
 
-  //VALIDANDO SI EL TWEET ES DEL USUARIO LOGEADO PARA MOSTRAR EL BOTON DE DELETE
-  const checkAuthority = (tweet, userId) => {
-    if (tweet.userId === userId) {
-      return (
-        <TweetCard
-          isAuthor
-          username={tweet.owner}
-          date={`${formatDate(tweet.date)} ago`}
-          content={tweet.content}
-          data={tweet}
-          tweetId={tweet.id}
-          tweetLikes={tweet.likesCount}
-        />
-      );
-    } else {
-      return (
-        <TweetCard
-          username={tweet.owner}
-          data={tweet}
-          date={`${moment(tweet.date).fromNow()} ago`}
-          content={tweet.content}
-          tweetLikes={tweet.likesCount}
-        />
-      );
-    }
-  };
-
+  const renderItem = ({ item }) => (
+    <TweetCard
+    username={item.owner}
+    content={item.content}
+    tweetId={item.id}
+    tweetLikes={item.likesCount}
+    date={formatDate(item.date)}
+    isAuthor={item.userId === user.id?true:false}
+    />
+  );
   return (
     <View style={styles.container}>
       <GlobalHeader name="Home" hasProfilePic hasSearch hasFavs />
 
+      {/* NEW TWEET BTN */}
       <TouchableOpacity
         style={styles.newTweetBtn}
         onPress={() => {
@@ -74,19 +59,19 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
 
-      <ScrollView>
-        {tweets !== null
-          ? tweets.map((tweet) =>(
-            <TouchableOpacity  key={tweet.id} onPress={() => {
-              setTweetData(tweet)
-              navigation.navigate('Tweet')
-            }} >
-
-              {checkAuthority(tweet, user.id)}
-            </TouchableOpacity>
-             ))
-          : null}
-      </ScrollView>
+      <View>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={tweets}
+            renderItem={renderItem}
+            keyExtractor={(tw) => tw.id}
+            ListFooterComponent={<View />}
+            ListFooterComponentStyle={{ height: 410 }}
+          />
+        )}
+      </View>
     </View>
   );
 };
