@@ -175,3 +175,13 @@ export const followUser = async (data,user)=>{
     catchError(error)
   }
 }
+
+export const retrieveFavorites = async (user)=>{
+  try {
+    console.log(user)
+    const res = await axios.get(`${url}getFavoritesByUser/${user}`)
+    return res
+  } catch (error) {
+    catchError(error)
+  }
+}

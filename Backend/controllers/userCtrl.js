@@ -149,4 +149,10 @@ following: false})
 }
 }
 
-module.exports = { login, find, register, setFavorite,followUser };
+const retrieveFavorites = async (req, res)=>{
+  console.log(req.params)
+  const findFavorites = await User.find({'id':req.params.userId}, 'favorites')
+  console.log(findFavorites)
+  }
+
+module.exports = { login, find, register, setFavorite,followUser, retrieveFavorites };

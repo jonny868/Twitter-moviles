@@ -20,7 +20,7 @@ const addNewTweet = async (req, res) => {
 const findTweetsByUserId = async (req, res) => {
   const { userId } = req.params;
   const findTweets = await Tweet.find({ 'userId':userId });
-  console.log(findTweets)
+  // console.log(findTweets)
   
   if (findTweets) {
     return res.json(findTweets);
@@ -101,6 +101,8 @@ const deleteComment = async (req, res)=>{
     message:'Comment Deleted'
   })
 }
+
+
 
 
 module.exports = { addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment,setLike, findCommentsByTweetId, deleteComment }

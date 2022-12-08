@@ -30,6 +30,7 @@ const TweetCard = (props) => {
     
   };
   const favBtn = (id, user) => {
+    console.log(id, user)
     addFavorite(id, user);
   };
 

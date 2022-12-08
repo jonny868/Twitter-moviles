@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const {login, find, register, setFavorite, followUser} = require('./controllers/userCtrl');
+const {login, find, register, setFavorite, followUser, retrieveFavorites} = require('./controllers/userCtrl');
 const  {addNewTweet, findTweetsByUserId, deleteTweetById,postNewComment, findCommentsByTweetId, setLike, deleteComment}  = require("./controllers/tweet");
 
 const router = Router();
@@ -22,5 +22,6 @@ router.post("/setLike", setLike)
 router.post("/setFavorite", setFavorite)
 router.get("/getCommentsByTweet/:tweetId", findCommentsByTweetId)
 router.post("/followuser", followUser)
+router.get("/getFavoritesByUser/:userId", retrieveFavorites)
 
 module.exports = router;
