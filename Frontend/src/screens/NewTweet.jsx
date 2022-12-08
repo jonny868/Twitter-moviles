@@ -10,33 +10,43 @@ import React, { useContext, useState } from "react";
 import { addNewTweet } from "../controllers/api";
 import { Context } from "../controllers/context";
 import GlobalHeader from "../components/GlobalHeader";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 const NewTweet = () => {
-  const { user } = useContext(Context);
+  const route = useRoute();
   const navigation = useNavigation();
-  const submitBtn = async () => {
-    const res = await addNewTweet({ userId: user.id, content: content, owner:user.username });
-    console.log(content, user.id);
 
-    setContent("");
-
-    navigation.goBack()
-  };
+  const { user } = useContext(Context);
 
   const [content, setContent] = useState("");
+
+  const submitBtn = () => {
+    addNewTweet({
+      userId: user.id,
+      content: content,
+      owner: user.username,
+    });
+    // console.log(content)
+    console.log(route.params)
+    setContent("");
+
+    navigation.navigate('Home');
+  };
 
   const inputChange = (data) => {
     setContent(data);
   };
+
   return (
     <View style={styles.container}>
       <GlobalHeader name="New Tweet" hasBack />
       <TextInput
         onChangeText={(text) => inputChange(text)}
-        value={content}
+        value={route.params?route.params.tweetData.content :content}
+        editable={route.params?false:true}
         placeholder="Say something..."
-       maxLength={140} 
-       multiline={true}
+        maxLength={140}
+        multiline={true}
       />
       <TouchableOpacity onPress={() => submitBtn()}>
         <View>

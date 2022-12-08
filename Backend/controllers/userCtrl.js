@@ -5,7 +5,7 @@ const moment = require("moment");
 const Tweet = require("../models/Tweet");
 
 const login = async (req, res) => {
-  console.log('Hello?')
+  // console.log('Hello?')
   const { username, password } = req.body;
   const findUsername = await User.findOne({ username });
   if (findUsername) {
@@ -22,7 +22,7 @@ const login = async (req, res) => {
         name,
         location,
       } = findUsername;
-      console.log(findUsername);
+      // console.log(findUsername);
       return res.status(200).json({
         username,
         id,
@@ -90,7 +90,7 @@ const register = async (req, res) => {
     date: formatedDate,
   });
   await newUser.save();
-  console.log(newUser);
+  // console.log(newUser);
   res.status(200).json({
     ok: true,
     message: "User registered successfully",
@@ -113,11 +113,11 @@ const find = async (req, res) => {
 const setFavorite = async (req, res)=>{
   const {user, data} = req.body
   const findFavorite = await User.findOne({'id':user,'favorites':data})
-  console.log(findFavorite)
-  console.log(user,data)
+  // console.log(findFavorite)
+  // console.log(user,data)
   // SI NO ESTA EL TWEET EN LOS FAVORITOS
   if(findFavorite === null){
-    console.log('jejeps')
+    // console.log('jejeps')
     await User.updateOne({'id':user}, {'$push':{'favorites':data}})
     return res.json({
       message:'Tweet Added to favorites'
@@ -139,11 +139,13 @@ const findFollower = await User.findOne({'id': user, 'followers':data})
 if(findFollower === null){
   await User.updateOne({'id': user},{'$inc': { "followCount": 1 },  "$push":{'followers': data}})
   return res.json({
-    message:'You are now following this user'
+    message:'You are now following this user',
+    following: true
   })
 }else{
   await User.findOneAndUpdate({'id': user},{'$inc': { "followCount": -1 },  "$pull":{'followers': data}})
-  return res.json({message:'No longer following this user'})
+  return res.json({message:'No longer following this user',
+following: false})
 }
 }
 

@@ -14,18 +14,18 @@ import { useNavigation } from "@react-navigation/native";
 
 const TweetCard = (props) => {
   const navigation = useNavigation();
-  const { setReload, reload, user, tweetData } = useContext(Context);
+  const { setReload, reload, user, tweetData, setTweetData } = useContext(Context);
   const [likeTweet, setLikeTweet] = useState(true);
 
   const deleteTweet = async (id) => {
-    console.log(id);
+    // console.log(id);
     const res = await deleteTweetById(id);
     setReload(!reload)
   };
   const likeBtn = () => {
     setLikeTweet(!likeTweet);
     likeATweet(likeTweet, tweetData.id, tweetData.userId);
-    console.log(tweetData);
+    // console.log(tweetData);
   };
   const favBtn = (id, user) => {
     addFavorite(id, user);
@@ -106,20 +106,25 @@ const TweetCard = (props) => {
             {likeTweet ? (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={{ color: "white", paddingRight: 5, fontSize: 15 }}>
-                  2
+                {props.tweetLikes}
                 </Text>
                 <AntDesign name="hearto" color="white" size={15} />
               </View>
             ) : (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={{ color: "white", paddingRight: 5, fontSize: 15 }}>
-                  2
+                  {props.tweetLikes}
                 </Text>
                 <AntDesign name="heart" color="white" size={15} />
               </View>
             )}
           </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            navigation.navigate('NewTweet', {tweetData})
+          }}>
+
           <AntDesign name="retweet" size={15} color="white" />
+          </TouchableOpacity>
           {/* FAV BUTTON */}
 
           <TouchableOpacity onPress={() => favBtn(props.tweetId, user.id)}>

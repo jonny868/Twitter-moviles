@@ -20,8 +20,9 @@ import CommentCard from "../components/CommentCard";
 
 const TweetScreen = () => {
   const { tweetData, user, reload, setReload } = useContext(Context);
- 
-  const [loading,setLoading] = useState(false);
+ const [loading, setLoading] = useState(false)
+  
+  const [isFavorited, setIsFavorited] = useState(false)
 
   const [comment, setComment] = useState({
     tweetId: tweetData.id,
@@ -43,7 +44,7 @@ const TweetScreen = () => {
     retrieveComments(tweetData.id).then((res) => {
       setComments(res);
       // setReload(false);
-      console.log(comments)
+      // console.log(comments)
     });
     setLoading(false)
   }, [reload]);
@@ -76,7 +77,7 @@ const TweetScreen = () => {
         <TweetCard
           isAuthor
           username={tweetData.owner}
-          date={`${moment(tweetData.date).fromNow()} ago`}
+          date={`${moment(tweetData.date, 'LLL').fromNow()} ago`}
           content={tweetData.content}
           tweetId={tweetData.id}
         />
@@ -85,7 +86,7 @@ const TweetScreen = () => {
       return (
         <TweetCard
           username={tweetData.owner}
-          date={`${moment(tweetData.date).fromNow()} ago`}
+          date={`${moment(tweetData.date, 'LLL').fromNow()} ago`}
           content={tweetData.content}
         />
       );
@@ -137,7 +138,7 @@ const TweetScreen = () => {
           <View>
             {loading ? <ActivityIndicator/>:
             <FlatList
-            data={comments}
+            data={comments.reverse()}
             keyExtractor={com =>com.id}
             renderItem={renderComent}
             ListFooterComponent={<View />}

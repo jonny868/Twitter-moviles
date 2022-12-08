@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 
-const url = "http://10.1.10.115:3000/";
+const url = "http://10.0.0.115:3000/";
 const urlOffice = "http://10.1.10.115:3000/"
 
 const catchError = async (err) => {
@@ -69,7 +69,7 @@ export const addNewTweet = async (data) => {
 export const retrieveTweetsByUser = async (userId) => {
   try {
     let response = await axios.get(`${url}getTweetsByUserId/${userId}`);
-    console.log(response.data)
+    // console.log(response.data)
     return response;
   } catch (error) {
     catchError(error);
@@ -78,7 +78,7 @@ export const retrieveTweetsByUser = async (userId) => {
 
 export const addNewComment = async (data) => {
   try {
-    // console.log(data)
+    console.log(data)
     let response = await axios.post(`${url}postNewComment`, data)
     return response
   } catch (error) {
@@ -123,6 +123,7 @@ export const likeATweet = async (liked, id, user) => {
   try {
     // console.log(data)
     let response = await axios.post(`${url}setLike`, {liked, id, user})
+    return response
     // console.log(response.data)
   } catch (error) {
     catchError(error)
@@ -166,7 +167,7 @@ export const addFavorite = async (data,user)=>{
 
 export const followUser = async (data,user)=>{
   try {
-    console.log(data, user)
+    // console.log(data, user)
     let response = await axios.post(`${url}followuser`, {data, user})
     console.log(response.data)
     return response

@@ -17,7 +17,7 @@ export default function App({ navigation }) {
   const Stack = createNativeStackNavigator();
 
   const [tweetData, setTweetData] = useState({
-    id: '', owner:'',userId:'', like:"", content:"", comments:[], 
+    id: '', owner:'',userId:'', Likes:[],likesCount:0, content:"", comments:[], 
   });
   const [reload, setReload] = useState(true);
   const [user, setUser] = useState({

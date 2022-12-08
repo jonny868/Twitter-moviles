@@ -26,7 +26,8 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     retrieveTweetsByUser(user.id).then((res) => {
-      setTweets(res.data);
+      // console.log(res.data)
+      setTweets(res.data.reverse());
     });
   }, [isFocused, reload]);
   //ELIMINAR TWEET
@@ -40,15 +41,19 @@ const HomeScreen = ({ navigation }) => {
           username={tweet.owner}
           date={`${formatDate(tweet.date)} ago`}
           content={tweet.content}
+          data={tweet}
           tweetId={tweet.id}
+          tweetLikes={tweet.likesCount}
         />
       );
     } else {
       return (
         <TweetCard
           username={tweet.owner}
+          data={tweet}
           date={`${moment(tweet.date).fromNow()} ago`}
           content={tweet.content}
+          tweetLikes={tweet.likesCount}
         />
       );
     }

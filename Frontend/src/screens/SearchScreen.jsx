@@ -5,6 +5,7 @@ import {
   StatusBar,
   TextInput,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
@@ -16,13 +17,14 @@ import { retrieveSearch } from "../controllers/api";
 import ProfileCard from "../components/ProfileCard";
 import TweetCard from "../components/TweetCard";
 import { Context } from "../controllers/context";
+import { useNavigation } from "@react-navigation/native";
 
 const SearchScreen = () => {
   const [input, setInput] = useState();
-  const { user } = useContext(Context);
-
   const [tweets, setTweets] = useState([]);
   const [profiles, setProfiles] = useState([]);
+  const { user, setTweetData } = useContext(Context);
+  const navigation = useNavigation();
   //Change input value
   const inputChange = (text) => {
     setInput(text);
@@ -62,7 +64,12 @@ const SearchScreen = () => {
             profiles.map((profile) => {
               return (
                 <View key={profile.id}>
-                  <ProfileCard username={profile.username} bio={profile.bio} user={profile.id} data={user.id} />
+                  <ProfileCard
+                    username={profile.username}
+                    bio={profile.bio}
+                    user={profile.id}
+                    data={user.id}
+                  />
                 </View>
               );
             })
@@ -76,13 +83,15 @@ const SearchScreen = () => {
           {tweets !== null ? (
             tweets.map((tweet) => {
               return (
-                <View key={tweet.id}>
+                <TouchableOpacity key={tweet.id} onPress={() => {
+                  setTweetData(tweet)
+                  navigation.navigate('Tweet')}}>
                   <TweetCard
                     username={tweet.owner}
                     date={`${moment(tweet.date, "LLL").fromNow()} ago`}
                     content={tweet.content}
                   />
-                </View>
+                </TouchableOpacity>
               );
             })
           ) : (
