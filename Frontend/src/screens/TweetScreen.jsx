@@ -44,7 +44,7 @@ const TweetScreen = () => {
     retrieveComments(tweetData.id).then((res) => {
       setComments(res);
       // setReload(false);
-      // console.log(comments)
+      console.log(comments)
     });
     setLoading(false)
   }, [reload]);

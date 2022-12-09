@@ -114,7 +114,7 @@ const setFavorite = async (req, res)=>{
   const {user, data} = req.body
   const findFavorite = await User.findOne({'id':user,'favorites':data})
   // console.log(findFavorite)
-  // console.log(user,data)
+  console.log(user,data)
   // SI NO ESTA EL TWEET EN LOS FAVORITOS
   if(findFavorite === null){
     // console.log('jejeps')
@@ -150,9 +150,22 @@ following: false})
 }
 
 const retrieveFavorites = async (req, res)=>{
-  console.log(req.params)
+  const favorites = [];
+  // console.log(req.params)
   const findFavorites = await User.find({'id':req.params.userId}, 'favorites')
-  console.log(findFavorites)
+    // console.log(findFavorites[0].favorites.length)
+  for (let i = 0; i < findFavorites[0].favorites.length; i++) {
+    const fav = await Tweet.find({'id':findFavorites[0].favorites[i]});
+    if (fav) {
+      // console.log(fav)
+     favorites.push(...fav)
+    }
+    else{
+      continue
+    }
+  }
+  console.log('FAVORITES:',favorites)
+  return res.send(favorites)
   }
 
 module.exports = { login, find, register, setFavorite,followUser, retrieveFavorites };

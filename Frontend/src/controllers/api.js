@@ -1,7 +1,8 @@
+const moment = require('moment');
 const axios = require("axios").default;
 
 const url = "http://10.0.0.115:3000/";
-const urlOffice = "http://10.1.10.115:3000/"
+// const url = "http://10.1.10.115:3000/"
 
 const catchError = async (err) => {
   /// Error
@@ -66,7 +67,7 @@ export const addNewTweet = async (data) => {
   return response;
 };
 
-export const retrieveTweetsByUser = async (userId) => {
+export const retrieveTweets = async (userId) => {
   try {
     let response = await axios.get(`${url}getTweetsByUserId/${userId}`);
     // console.log(response.data)
@@ -154,9 +155,16 @@ try {
 
 export const addFavorite = async (data,user)=>{
   try {
+    let favorites=[]
     // console.log('FAVORITE:',data, 'USER:',user)
     const response = await axios.post(`${url}setFavorite`, {data, user})
-    console.log(response.data)
+    // console.log(response.data)
+    // if (response.data) {
+    //   response.data.map((item) => {
+    //     favorites.push(...item)
+    //   })
+    // }
+    // console.log(favorites)
     return response.data
   } catch (error) {
     catchError(error)
@@ -178,10 +186,12 @@ export const followUser = async (data,user)=>{
 
 export const retrieveFavorites = async (user)=>{
   try {
-    console.log(user)
     const res = await axios.get(`${url}getFavoritesByUser/${user}`)
-    return res
+    // console.log(res.data)
+    return res.data
   } catch (error) {
     catchError(error)
   }
 }
+
+export const formatDate = (date) => moment(date, "LLL").fromNow();

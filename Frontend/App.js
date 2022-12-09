@@ -28,7 +28,10 @@ export default function App({ navigation }) {
     bio: "",
     profilePicture: "",
     location: "",
+    favorites:[],
     dob:'',
+    followers:[],
+    followersCount:0,
     name: "",
   });
   return (

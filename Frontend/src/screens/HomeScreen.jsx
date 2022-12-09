@@ -11,7 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../controllers/context";
 import GlobalHeader from "../components/GlobalHeader";
-import { retrieveTweetsByUser } from "../controllers/api";
+import { retrieveTweets } from "../controllers/api";
 import { useIsFocused } from "@react-navigation/native";
 import TweetCard from "../components/TweetCard";
 
@@ -26,23 +26,24 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     setLoading(true);
-    retrieveTweetsByUser(user.id).then((res) => {
+    retrieveTweets(user.id).then((res) => {
       setTweets(res.data.reverse());
-      console.log(tweets);
+      // console.log(tweets);
     });
     setLoading(false);
   }, [isFocused, reload]);
 
-  const renderItem = ({ item }) => (
-    <TweetCard
+  const renderItem = ({ item }) => {
+    return (<TweetCard
     username={item.owner}
     content={item.content}
     tweetId={item.id}
     tweetLikes={item.likesCount}
     date={formatDate(item.date)}
     isAuthor={item.userId === user.id?true:false}
-    />
-  );
+    />)
+  }
+    
   return (
     <View style={styles.container}>
       <GlobalHeader name="Home" hasProfilePic hasSearch hasFavs />
@@ -68,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
             renderItem={renderItem}
             keyExtractor={(tw) => tw.id}
             ListFooterComponent={<View />}
-            ListFooterComponentStyle={{ height: 410 }}
+            ListFooterComponentStyle={{ height: 100 }}
           />
         )}
       </View>

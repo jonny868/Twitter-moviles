@@ -10,10 +10,9 @@ import {
 import React, { useContext, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
-import moment from "moment";
 
 import GlobalHeader from "../components/GlobalHeader";
-import { retrieveSearch } from "../controllers/api";
+import { formatDate, retrieveSearch } from "../controllers/api";
 import ProfileCard from "../components/ProfileCard";
 import TweetCard from "../components/TweetCard";
 import { Context } from "../controllers/context";
@@ -88,8 +87,11 @@ const SearchScreen = () => {
                   navigation.navigate('Tweet')}}>
                   <TweetCard
                     username={tweet.owner}
-                    date={`${moment(tweet.date, "LLL").fromNow()} ago`}
                     content={tweet.content}
+                    tweetId={tweet.id}
+                    tweetLikes={tweet.likesCount}
+                    date={formatDate(tweet.date)}
+                    isAuthor={tweet.userId === user.id?false:true}
                   />
                 </TouchableOpacity>
               );

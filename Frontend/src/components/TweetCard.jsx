@@ -32,6 +32,7 @@ const TweetCard = (props) => {
   const favBtn = (id, user) => {
     console.log(id, user)
     addFavorite(id, user);
+    setReload(!reload)
   };
 
   return (
@@ -129,10 +130,15 @@ const TweetCard = (props) => {
           <AntDesign name="retweet" size={15} color="white" />
           </TouchableOpacity>
           {/* FAV BUTTON */}
-
+          {props.isFaved?
           <TouchableOpacity onPress={() => favBtn(props.tweetId, user.id)}>
+            <AntDesign name="star" size={15} color="white" />
+          </TouchableOpacity>:<TouchableOpacity onPress={() => favBtn(props.tweetId, user.id)}>
             <AntDesign name="staro" size={15} color="white" />
           </TouchableOpacity>
+
+        }
+          
           {/* DELETE BUTTON */}
           {props.isAuthor === true ? (
             <TouchableWithoutFeedback

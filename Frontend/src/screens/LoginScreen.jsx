@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
-  Keyboard
+  Keyboard,
+  Image,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { loginUser } from "../controllers/api";
@@ -37,9 +38,15 @@ export default function LoginScreen({ navigation }) {
 
   const inputChange = (name, data) => setInputs({ ...inputs, [name]: data });
   return (
-    <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <GlobalHeader name="Login" />
+        <View>
+          <Image
+            source={ require("../../assets/tuitter-1.png") }
+            style={{ width: 230, height: 230, alignSelf: "center", marginTop: 4  }}
+          />
+        </View>
         <View style={styles.cardContainer}>
           <TextInput
             style={styles.input}
